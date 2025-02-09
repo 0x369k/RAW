@@ -98,3 +98,4 @@ coverage/                # Test Coverage Reports
 # ==========================
 .prettiercache/          # Cache für Prettier (Code Formatter)
 .eslintcache             # Cache für ESLint
+prompt-library/
