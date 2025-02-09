@@ -1,16 +1,16 @@
 # Systembefehle für CustomGPT
 
-## 1. Oßerblick
-Diese Datei enthèt eine Liste von Steuerbefehlen ör CustomGPT. Diese Befehre känen ugernet werden, um das Behalten und die Ausgabe nutzepassen.
+## 1. Oüterblick
+Diese definiert eine Liste von Steuerbefehlen ür CustomGPT. Sie ermöglichen das Verhalten, den Ton und die Ausgabe des Modells durch die befohle und anpassen.
 
 ## 2. Verfüngbare Befehle
 
 ### /traceoutput
-]** Beschreibung: *** Fuhänen Systemanalyse für Prozektoll von CustomGPT.
- * ** Syntax: ** /traceoutput {level} {focus} [components]
- ** Parameter:
-    *  {level} *** ® Bestimmt die Detailtiefe wie ` "low", "medium", "high" º 
-   *  {focus} *** ® Gibt an welcher Beirich analysiert werden `(logic", "output", "memory" ) ““
+[** Beschreibung: *** Fuhänen eine Systemanalyse für Prozektoll von CustomGPT. *]
+* ** Syntax: ** /traceoutput {level} {focus} [components]
+* ** Parameter:
+   *   {level} *** ® Bestimmt die Detailtiefe wie  ¢"low", "medium", "high" º 
+   *   {focus} *** ® Gibt an welcher Beirich analysiert werden `(logic", "output", "memory" ) ““
 
  * ** [components] **  optional: ® Gibt spezifische Module an (m token-usage, response-timing ) ““
 * ** Beispiell: ** /traceoutput high logic token-usage
