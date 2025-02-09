@@ -1,0 +1,23 @@
+name: Auto-Sync to GitHub
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 * * * *"  # Jede Stunde
+  workflow_dispatch:  # Ermöglicht manuelles Triggern
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository klonen
+        uses: actions/checkout@v3
+
+      - name: Änderungen committen & pushen
+        run: |
+          git add .
+          git commit -m "🔄 Auto-Sync durch GitHub Actions" || echo "Keine Änderungen zum Commit"
+          git push origin main || echo "Keine Änderungen zum Push"
