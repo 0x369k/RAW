@@ -1,0 +1,100 @@
+# ==========================
+# 🔹 GitHub Codespaces
+# ==========================
+.codespaces/             # Sitzungsspezifische Metadaten (immer ignorieren)
+.devcontainer/tmp/       # Temporäre Dateien in der Entwicklungsumgebung
+.devcontainer/*.log      # Logs aus der Entwicklungsumgebung
+.devcontainer/.cache/    # Cache-Dateien, die nicht ins Repo gehören
+
+# ==========================
+# 🔹 System & OS-Dateien
+# ==========================
+.DS_Store                # macOS Finder-Dateien
+Thumbs.db                # Windows Explorer Thumbnail-Cache
+desktop.ini              # Windows Systemdateien
+
+# ==========================
+# 🔹 Git-spezifische Dateien
+# ==========================
+.git/
+.gitignore               # Falls du alternative .gitignore-Dateien nutzen willst
+
+# ==========================
+# 🔹 Editor-spezifische Dateien
+# ==========================
+.vscode/                 # VS Code Arbeitsbereichseinstellungen
+.idea/                   # JetBrains IDEs (WebStorm, PyCharm, IntelliJ)
+*.suo                    # Visual Studio Benutzerdateien
+*.ntvs*                  # Node.js-Tools für Visual Studio
+*.njsproj                # Node.js-Projekte in Visual Studio
+*.sln                    # Visual Studio Solution-Dateien
+*.swp                    # Swap-Dateien von Vim
+
+# ==========================
+# 🔹 Logs & temporäre Dateien
+# ==========================
+logs/
+*.log                    # Allgemeine Log-Dateien
+*.tmp                    # Temporäre Dateien
+*.cache                  # Cache-Dateien
+*.pid                    # Prozess-ID-Dateien
+*.seed                   # Datenbank-Seed-Dateien
+*.state                  # Status-Dateien
+
+# ==========================
+# 🔹 Node.js / npm / Yarn
+# ==========================
+node_modules/            # Abhängigkeiten (sollten nicht gepusht werden)
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# ==========================
+# 🔹 Python-Projekte
+# ==========================
+__pycache__/             # Python Bytecode-Cache
+*.pyc                    # Kompilierte Python-Dateien
+*.pyo
+*.pyd
+venv/                    # Virtuelle Umgebung
+env/                     # Alternative virtuelle Umgebung
+*.ipynb_checkpoints/     # Jupyter Notebook Cache
+
+# ==========================
+# 🔹 Java-Projekte
+# ==========================
+*.class
+*.jar
+*.war
+*.ear
+target/
+out/
+
+# ==========================
+# 🔹 Docker / Container-Dateien
+# ==========================
+docker-compose.override.yml  # Falls du lokale Overrides hast
+secrets/                     # Falls du Docker Secrets nutzt
+
+# ==========================
+# 🔹 Umgebungsvariablen & Geheimnisse
+# ==========================
+.env                     # Enthält API-Schlüssel & Passwörter (nicht ins Repo!)
+*.pem                    # Private Schlüssel
+*.key                    # SSL-Schlüssel
+config/secrets.yml       # Falls du YAML-Configs für geheime Daten hast
+config/database.yml      # Falls du eine Datenbankverbindung speicherst
+
+# ==========================
+# 🔹 Build-Ordner & Cache
+# ==========================
+dist/                    # Build-Output
+target/                  # Maven / Gradle Output
+out/                     # Alternative Build-Verzeichnisse
+coverage/                # Test Coverage Reports
+
+# ==========================
+# 🔹 Automatische Formatierung & Linting
+# ==========================
+.prettiercache/          # Cache für Prettier (Code Formatter)
+.eslintcache             # Cache für ESLint
