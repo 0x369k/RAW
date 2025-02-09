@@ -1,0 +1,33 @@
+actions:
+  on_init:
+    - description: "Prüfe, welche Dateien im Repository vorhanden sind"
+      request: "GET /repos/0x369k/RAW/git/trees/main?recursive=1"
+      save_to: "/mnt/data/repo_files.json"
+
+    - description: "Überprüfe, ob das 'prompts/'-Verzeichnis existiert"
+      iterate_over: "/mnt/data/repo_files.json"
+      if: "item.path == 'prompts/'"
+      execute: "set_variable('has_prompts', True)"
+
+    - description: "Falls 'prompts/' nicht existiert, schreibe eine Warnung"
+      if: "not get_variable('has_prompts', False)"
+      execute: "write_log('WARN: Kein prompts/-Verzeichnis gefunden. System-Prompt bleibt unverändert.')"
+
+    - description: "Lade alle Dateien aus 'prompts/' falls vorhanden"
+      iterate_over: "/mnt/data/repo_files.json"
+      if: "item.path.startswith('prompts/')"
+      request: "GET /repos/0x369k/RAW/contents/{item.path}"
+      decode_base64: true
+      save_to: "/mnt/data/{item.path}"
+
+    - description: "Überprüfe, ob system_prompt.md existiert"
+      if: "'prompts/system_prompt.md' in [item.path for item in load_json('/mnt/data/repo_files.json')]"
+      execute: "set_variable('has_system_prompt', True)"
+
+    - description: "Falls system_prompt.md fehlt, schreibe eine Warnung"
+      if: "not get_variable('has_system_prompt', False)"
+      execute: "write_log('WARN: prompts/system_prompt.md wurde nicht gefunden. System-Prompt bleibt unverändert.')"
+
+    - description: "Setze system_prompt.md als System-Prompt"
+      if: "get_variable('has_system_prompt', False)"
+      execute: "set_system_prompt('/mnt/data/prompts/system_prompt.md')"
