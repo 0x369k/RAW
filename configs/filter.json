@@ -1,0 +1,18 @@
+{
+  "id": "modr-1234567890abcdef",
+  "object": "moderation",
+  "created": 1617727138,
+  "model": "text-moderation-1",
+  "results": [
+    {
+      "flagged": false,
+      "categories": {
+        "hate": false,
+        "violence": false,
+        "sexual": false,
+        "self-harm": false,
+        "abuse": false
+      }
+    }
+  ]
+}
