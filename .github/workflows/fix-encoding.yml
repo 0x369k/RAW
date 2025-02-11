@@ -24,21 +24,30 @@ jobs:
             # Erstelle eine Backup-Kopie für den Vergleich
             cp "$file" "$file.bak"
 
-            # Prüfe, ob Datei in Base64 ist (einfacher Check auf gültige Zeichenlänge)
+            # Prüfe, ob Datei Base64-kodiert ist
             if grep -qE "^[A-Za-z0-9+/=]+$" "$file" && [ $(wc -c < "$file") -gt 100 ]; then
               echo "⚠ Datei scheint Base64-kodiert zu sein, dekodiere sie..." | tee -a encoding-fix.log
-              cat "$file" | base64 --decode > "$file" || { echo "❌ Base64-Dekodierung fehlgeschlagen für $file"; exit 1; }
+              cat "$file" | base64 --decode > "$file" || { echo "❌ Base64-Dekodierung fehlgeschlagen für $file"; continue; }
             fi
 
-            # Erzwinge UTF-8 ohne BOM und korrigiere Fehler
-            iconv -f utf-8 -t utf-8 "$file" -o "$file" || { echo "❌ Fehler beim Konvertieren von $file"; exit 1; }
+            # Prüfe, ob Datei bereits in UTF-8 ist
+            if file -i "$file" | grep -q "charset=utf-8"; then
+              echo "✅ Datei ist bereits UTF-8: $file" | tee -a encoding-fix.log
+              continue
+            fi
+
+            # Versuche die Datei in UTF-8 umzuwandeln
+            iconv -f utf-8 -t utf-8 "$file" -o "$file" 2>/dev/null
+            if [ $? -ne 0 ]; then
+              echo "❌ Fehler bei iconv für Datei: $file, speichere Sicherungskopie." | tee -a encoding-fix.log
+              mv "$file" "$file.failed"
+              continue
+            fi
 
             # Prüfe, ob Änderungen vorgenommen wurden
             if ! cmp -s "$file" "$file.bak"; then
               echo "✅ Datei $file wurde korrigiert!" | tee -a encoding-fix.log
               git add "$file"
-            else
-              echo "✅ Datei $file war bereits korrekt!" | tee -a encoding-fix.log
             fi
 
             # Entferne Backup-Datei
@@ -61,5 +70,4 @@ jobs:
         with:
           name: encoding-fix-log
           path: encoding-fix.log
-
 
