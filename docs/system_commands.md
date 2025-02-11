@@ -1,22 +1,22 @@
-# Systembefehle für CustomGPT
+# Systembefehle fÃ¼r CustomGPT
 
-## 1. �berblick
-Diese Datei definiert eine Liste von Steuerbefehlen für CustomGPT. Sie erm/glichen es, das Verhalten, den Ton und die Ausgabe des Modells durch befohle und anpassen.
+## 1. ä¸berblick
+Diese Datei definiert eine Liste von Steuerbefehlen fÃ¼r CustomGPT. Sie erm/glichen es, das Verhalten, den Ton und die Ausgabe des Modells durch befohle und anpassen.
 
-## 2. Verfgüngbare Befehle
+## 2. VerfgÃ¼ngbare Befehle
 
 ### /traceoutput
-[** Beschreibung: *** Dşort eine Systemanalyse für das Protokoll von CustomGPT.
+[** Beschreibung: *** DÅŸort eine Systemanalyse fÃ¼r das Protokoll von CustomGPT.
 * ** Syntax: ** /traceoutput {level} {focus} [components]
 ** Parameter:
-   *  {level} *** ® Bestimmt die Detailtiefe wie " "low", "medium", "high" º 
-   *  {focus} *** ® Gibt an welcher Beirich analysiert werden `(logic", "output", "memory" ) ““
+   *  {level} *** Â® Bestimmt die Detailtiefe wie "Â "low", "medium", "high" Âº 
+   *  {focus} *** Â® Gibt an welcher Beirich analysiert werden `(logic", "output", "memory" ) â€œâ€œ
 
- * ** [components] **  optional: ® Gibt spezifische Module an (m token-usage, response-timing ) ““
+ * ** [components] **  optional: Â® Gibt spezifische Module an (m token-usage, response-timing ) â€œâ€œ
 * ** Beispiell: ** /traceoutput high logic token-usage
 
 ### /forcecreativity
-* ** Beschreibung: *** Erzwingt eine partikullàr Kreativität und unkonventionelle Antworten
+* ** Beschreibung: *** Erzwingt eine partikullÃ r KreativitÃ¤t und unkonventionelle Antworten
 .
 * ** Syntax: ** /forcecreativity {Thema}
  * ** Beispiel: ** /forcecreativity Science-Fiction-Geschichte
@@ -25,5 +25,5 @@ Diese Datei definiert eine Liste von Steuerbefehlen für CustomGPT. Sie erm/glic
 * ** Beschreibung: *** Legt die Detailtiefe sethen.
 
  * ** Syntax: ** /depthcontrol {level}
- ** Vügle Best Practices,
+ ** VÃ¼gle Best Practices,
 - N-utze /traceoutput wenn die bonter
