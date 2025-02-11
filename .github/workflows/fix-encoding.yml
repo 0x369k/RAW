@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Repository klonen
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # Verhindert Probleme mit "detached HEAD"
 
       - name: Erstelle Log-Datei
         run: echo "Encoding Fix Log - $(date)" > encoding-fix.log
@@ -38,12 +40,20 @@ jobs:
         run: |
           if git diff --staged --quiet; then
             echo "🚀 Keine Änderungen gefunden, kein Commit nötig." | tee -a encoding-fix.log
+            exit 0
           else
             git config --global user.name "github-actions"
             git config --global user.email "github-actions@github.com"
             git commit -m "🔥 Automatische Konvertierung von ISO-8859-1 nach UTF-8"
-            git push
           fi
+
+      - name: Änderungen pushen
+        run: |
+          git branch --show-current
+          git pull --rebase origin main  # Verhindert Merge-Konflikte
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log-Datei als Artefakt speichern
         uses: actions/upload-artifact@v4
