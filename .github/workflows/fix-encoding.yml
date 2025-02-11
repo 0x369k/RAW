@@ -1,0 +1,37 @@
+name: Fix Encoding Issues
+
+on:
+  push:
+    paths:
+      - "docs/**"  # Prüft alle Änderungen im "docs"-Ordner
+  workflow_dispatch: # Manuelles Starten der Action möglich
+
+jobs:
+  fix_encoding:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Überprüfe und fixe Encoding-Fehler
+        run: |
+          for file in $(find docs -type f); do
+            echo "🔍 Prüfe Datei: $file"
+            
+            # Erstelle eine Backup-Kopie für den Vergleich
+            cp "$file" "$file.bak"
+            
+            # Erzwinge UTF-8 ohne BOM und korrigiere Fehler
+            iconv -f utf-8 -t utf-8 "$file" -o "$file" || echo "⚠ Fehler bei $file"
+
+            # Prüfe, ob Änderungen vorgenommen wurden
+            if ! cmp -s "$file" "$file.bak"; then
+              echo "✅ Datei $file wurde korrigiert!"
+              git add "$file"
+            fi
+
+            # Entferne Backup-Datei
+            rm "$file.bak"
+          done
+
+
