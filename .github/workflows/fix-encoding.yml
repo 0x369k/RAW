@@ -1,9 +1,9 @@
-name: Fix Encoding Issues and Base64 Decoding
+name: Fix Encoding Issues (ISO-8859-1 → UTF-8)
 
 on:
   push:
     paths:
-      - "docs/**"  # Überprüft nur Dateien im "docs"-Ordner
+      - "docs/**"  # Überprüft alle Dateien im "docs"-Ordner
   workflow_dispatch: # Manuelles Starten der Action möglich
 
 jobs:
@@ -16,49 +16,22 @@ jobs:
       - name: Erstelle Log-Datei
         run: echo "Encoding Fix Log - $(date)" > encoding-fix.log
 
-      - name: Überprüfe und fixe Encoding-Fehler + Base64-Fehler
+      - name: Überprüfe und fixe Encoding-Fehler (ISO-8859-1 → UTF-8)
         run: |
           for file in $(find docs -type f); do
             echo "🔍 Prüfe Datei: $file" | tee -a encoding-fix.log
             
-            # Backup erstellen
-            cp "$file" "$file.bak"
-
-            # Prüfe, ob Datei Base64-kodiert ist (nur wenn sie nicht zu klein ist)
-            if grep -qE "^[A-Za-z0-9+/=]+$" "$file" && [ $(wc -c < "$file") -gt 100 ]; then
-              echo "⚠ Datei könnte Base64-kodiert sein, dekodiere sie..." | tee -a encoding-fix.log
-              if base64 --decode "$file" > "$file.decoded" 2>/dev/null; then
-                mv "$file.decoded" "$file"
-                echo "✅ Base64 erfolgreich dekodiert: $file" | tee -a encoding-fix.log
-              else
-                echo "❌ Base64-Dekodierung fehlgeschlagen: $file" | tee -a encoding-fix.log
-                continue
-              fi
-            fi
-
-            # Prüfe, ob Datei bereits UTF-8 ist
-            if file -i "$file" | grep -q "charset=utf-8"; then
-              echo "✅ Datei ist bereits UTF-8: $file" | tee -a encoding-fix.log
-              continue
-            fi
-
-            # Konvertiere nach UTF-8 (Fehler ignorieren, falls nicht möglich)
-            if ! iconv -f utf-8 -t utf-8 "$file" -o "$file" 2>/dev/null; then
-              echo "❌ Fehler bei iconv für Datei: $file, speichere Sicherungskopie." | tee -a encoding-fix.log
-              mv "$file" "$file.failed"
-              continue
-            fi
-
-            # Prüfe, ob Änderungen vorgenommen wurden
-            if ! cmp -s "$file" "$file.bak"; then
-              echo "✅ Datei $file wurde korrigiert!" | tee -a encoding-fix.log
+            # Prüfe, ob Datei NICHT in UTF-8 ist
+            if file -i "$file" | grep -q "charset=iso-8859-1"; then
+              echo "⚠ Datei ist in ISO-8859-1: $file → Konvertiere nach UTF-8" | tee -a encoding-fix.log
+              mv "$file" "$file.bak"
+              iconv -f ISO-8859-1 -t UTF-8 "$file.bak" -o "$file" || { echo "❌ Konvertierung fehlgeschlagen: $file" | tee -a encoding-fix.log; mv "$file.bak" "$file"; continue; }
+              rm "$file.bak"
+              echo "✅ Datei erfolgreich konvertiert: $file" | tee -a encoding-fix.log
               git add "$file"
             else
-              echo "✅ Datei $file war bereits korrekt!" | tee -a encoding-fix.log
+              echo "✅ Datei ist bereits UTF-8: $file" | tee -a encoding-fix.log
             fi
-
-            # Backup entfernen
-            rm "$file.bak"
           done
 
       - name: Änderungen committen (falls nötig)
@@ -68,7 +41,7 @@ jobs:
           else
             git config --global user.name "github-actions"
             git config --global user.email "github-actions@github.com"
-            git commit -m "🔥 Automatische Korrektur von Encoding- und Base64-Fehlern"
+            git commit -m "🔥 Automatische Konvertierung von ISO-8859-1 nach UTF-8"
             git push
           fi
 
