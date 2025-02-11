@@ -1,37 +1,65 @@
-name: Fix Encoding Issues
+name: Fix Encoding Issues and Base64 Decoding
 
 on:
   push:
     paths:
-      - "docs/**"  # Prüft alle Änderungen im "docs"-Ordner
+      - "docs/**"  # Überprüft nur Dateien im "docs"-Ordner
   workflow_dispatch: # Manuelles Starten der Action möglich
 
 jobs:
   fix_encoding:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Repository klonen
         uses: actions/checkout@v4
 
-      - name: Überprüfe und fixe Encoding-Fehler
+      - name: Erstelle Log-Datei
+        run: echo "Encoding Fix Log - $(date)" > encoding-fix.log
+
+      - name: Überprüfe und fixe Encoding-Fehler + Base64-Fehler
         run: |
           for file in $(find docs -type f); do
-            echo "🔍 Prüfe Datei: $file"
+            echo "🔍 Prüfe Datei: $file" | tee -a encoding-fix.log
             
             # Erstelle eine Backup-Kopie für den Vergleich
             cp "$file" "$file.bak"
-            
+
+            # Prüfe, ob Datei in Base64 ist (einfacher Check auf gültige Zeichenlänge)
+            if grep -qE "^[A-Za-z0-9+/=]+$" "$file" && [ $(wc -c < "$file") -gt 100 ]; then
+              echo "⚠ Datei scheint Base64-kodiert zu sein, dekodiere sie..." | tee -a encoding-fix.log
+              cat "$file" | base64 --decode > "$file" || { echo "❌ Base64-Dekodierung fehlgeschlagen für $file"; exit 1; }
+            fi
+
             # Erzwinge UTF-8 ohne BOM und korrigiere Fehler
-            iconv -f utf-8 -t utf-8 "$file" -o "$file" || echo "⚠ Fehler bei $file"
+            iconv -f utf-8 -t utf-8 "$file" -o "$file" || { echo "❌ Fehler beim Konvertieren von $file"; exit 1; }
 
             # Prüfe, ob Änderungen vorgenommen wurden
             if ! cmp -s "$file" "$file.bak"; then
-              echo "✅ Datei $file wurde korrigiert!"
+              echo "✅ Datei $file wurde korrigiert!" | tee -a encoding-fix.log
               git add "$file"
+            else
+              echo "✅ Datei $file war bereits korrekt!" | tee -a encoding-fix.log
             fi
 
             # Entferne Backup-Datei
             rm "$file.bak"
           done
+
+      - name: Änderungen committen (falls nötig)
+        run: |
+          if git diff --staged --quiet; then
+            echo "🚀 Keine Änderungen gefunden, kein Commit nötig." | tee -a encoding-fix.log
+          else
+            git config --global user.name "github-actions"
+            git config --global user.email "github-actions@github.com"
+            git commit -m "🔥 Automatische Korrektur von Encoding- und Base64-Fehlern"
+            git push
+          fi
+
+      - name: Log-Datei als Artefakt speichern
+        uses: actions/upload-artifact@v4
+        with:
+          name: encoding-fix-log
+          path: encoding-fix.log
 
 
