@@ -1,4 +1,4 @@
-# Neue API-Befehle für GitHub-Interaktion
+# Neue API-Befehle fÃ¼r GitHub-Interaktion
 
 ## 1. **Abrufen der Repository-Dateien**
 * **Befehl.** `/getRepoFiles ${owner} } repo} {branch_or_sha}`
@@ -11,7 +11,7 @@
 * **Befehl.** `/getFileContent {owner} { repo} { path}`*
 * **Methode.* `GET``
 * **Pfad.* `/repos/{owner}/{repo}/contents/{path}`
-* **Beschreibung*: Lädt den Inhalt einer Datei aus einem Gerepository.
+* **Beschreibung*: LÃ¤dt den Inhalt einer Datei aus einem Gerepository.
 
 
 ## 3. **Erstellen oder Aktualisieren einer Datei** 
@@ -21,11 +21,11 @@
 * **Beschreibung*: Erstellen doer aktualisieren einer Datei in einem Repository. Falls die datei bereits existiert, muss die kurpente `sha` angegeben werden.
 
 
-## 4. **Lül�schung einer Datei** 
+## 4. **LÃ¼låschung einer Datei** 
 * **Befehl.** `/deleteFile {owner} { repo} { path} {message} {sha}`*
 * **Methode.* `DELETE``
 * **Pfad.* `/repos/{owner}/{repo}/contents/{path}`
-* **Beschreibung*: Läscht eine Datei in einem Repository. Die `sha` der Datei muss angegeben werden.
+* **Beschreibung*: LÃ¤scht eine Datei in einem Repository. Die `sha` der Datei muss angegeben werden.
 
 
 ## 5. **Abrufen von Benutzer-Repositories**
