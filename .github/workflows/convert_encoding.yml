@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch: # Ermöglicht manuelles Starten des Workflows
+  workflow_dispatch: # Manuelles Starten möglich
 
 jobs:
   convert_encoding:
@@ -17,21 +17,24 @@ jobs:
       - name: Repository auschecken
         uses: actions/checkout@v4
 
-      - name: Debugging: Zeige gefundene ISO-8859-1 Dateien
+      - name: Prüfe, ob Dateien mit ISO-8859-1 existieren
         run: |
           echo "🔍 Suche nach Dateien mit ISO-8859-1 Kodierung..."
           find . -type f -exec file --mime {} + | grep 'iso-8859-1' || echo "✅ Keine ISO-8859-1 Dateien gefunden."
 
-      - name: Finde und konvertiere ISO-8859-1-Dateien
+      - name: Konvertiere ISO-8859-1 nach UTF-8 (falls vorhanden)
         run: |
-          find . -type f \( -name "*.txt" -o -name "*.csv" -o -name "*.md" -o -name "*.html" \) \
-            -exec file --mime {} + | grep 'iso-8859-1' | cut -d: -f1 | while read file; do
-              echo "🔄 Konvertiere: $file"
-              iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8"
-              mv "$file.utf8" "$file"
-            done
+          found_files=false
+          find . -type f -exec file --mime {} + | grep 'iso-8859-1' | cut -d: -f1 | while read file; do
+            echo "🔄 Konvertiere: $file"
+            iconv -f ISO-8859-1 -t UTF-8 "$file" -o "$file.utf8" && mv "$file.utf8" "$file"
+            found_files=true
+          done
+          if [ "$found_files" = false ]; then
+            echo "✅ Keine konvertierbaren Dateien gefunden."
+          fi
 
-      - name: Prüfe auf Änderungen
+      - name: Prüfe auf Änderungen und committe falls nötig
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
@@ -43,11 +46,3 @@ jobs:
             git push
           fi
 
-      # Optional: Pull Request statt direktem Push
-      # - name: Erstelle Pull Request mit Änderungen
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     branch: encoding-fix
-      #     commit-message: "🔄 Automatische Konvertierung von ISO-8859-1 zu UTF-8"
-      #     title: "Fix Encoding: ISO-8859-1 → UTF-8"
-      #     body: "Dieser PR enthält automatisch konvertierte Dateien."
