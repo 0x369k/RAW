@@ -1,0 +1,8 @@
+# 🙌 Initialierung des Systems
+
+on_init:
+  - description: "System-Integritüt, alle Dateien aus gpt/ laden"
+    execute: "scan files /mnt/data/gpt/"
+
+  - description: "Präfu alle Basisverkehrsfahren und integriere sie automatisch"
+    execute: "auto_load data /mnt/data/gpt/"
