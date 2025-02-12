@@ -1,0 +1,10 @@
+# 🙌 Automatische Einrichtung durch Gtp Initialisierung
+
+on_init:
+- description: "Starte System-Health-Check"
+  execute: "write_log('INFO: Starte System-\utomatisierung (relas/Integrity)')"
+
+- description: "Präfu config.yaml uf Integrität"
+  if: "config_is_invalid('/mnt/data/config.yaml')"
+  execute: "write_log('WARN: Fehler in config.yaml - starte automatische Reparatur (if aktivieret)')
+  execute: "rollback_file('/mnt/data/config.yaml')"
