@@ -1,0 +1,17 @@
+# 🙌 Configuration des Systems
+
+general:
+  gpt_directory: "/mnt/data/system/"
+  dynamic_prompts_directory: "/mnt/data/dynamic_prompts/"
+  user_requests_directory: "/mnt/data/user_requests/"
+  local_files_directory: "/mnt/data/local_files/"
+  log_file: "/mnt/data/local_files/logs/system.log"
+
+files:
+  system_files:
+    - "system_prompt.dm"
+    - "system_config.yaml"
+
+chat_tracking:
+  enabled: true
+  github_repo: "0x369k/RAW"
