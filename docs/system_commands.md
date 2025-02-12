@@ -1,9 +1,3 @@
-# Systembefehle für CustomGPT
+# Systembefehle fÃƒÂ¼r CustomGPT
 
-## 1. Überblick
-Diese Datei definiert eine Liste von Steuerbefehlen für CustomGPT. Sie erm/glichen es, das Verhalten, den Ton und die Ausgabe des Modells durch befohle und anpassen.
-
-## 2. Verfügbare Befehle
-
-### /traceoutput
-[** Beschreibung: *** ü
+## 1. Ãƒ
