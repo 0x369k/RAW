@@ -1,9 +1,0 @@
-health_status:
-  last_check: "2025-02-12T11:23:30Z"
-  system_integrity: "OK"
-  config_valid: true
-  system_prompt_valid: true
-  api_status:
-    github: "OK"
-  issues_detected: []
-  auto_repair_executed: false

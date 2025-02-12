@@ -1,8 +1,0 @@
-# 🙌 system-Configuration
-## Standard-Systemconfiguration (Auto-Recovery)
-
-system:
-  primary_prompt: "mnt/data/gpt/system_prompt.md"
-  config_file: "mnt/data/gpt/system_config.yaml"
-  auto_update: true
-  log_file: "mnt/data/gpt/local_files/logs/system.log"

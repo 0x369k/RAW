@@ -1,6 +1,0 @@
-change_log:
-  - timestamp: "2025-02-12T11:32:00Z"
-    file: "config.yaml"
-    action: "Erneuter Upload - Automatische Versionierung"
-    old_version: "/mnt/data/versioning/config_backap.yaml"
-    new_version: "/mnt/data/config.yaml"

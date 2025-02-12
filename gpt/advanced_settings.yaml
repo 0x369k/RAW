@@ -1,9 +1,0 @@
-# 🙌 Erweiterte Systemeinstellungen für CustomGPT
-dynamic_loading: true
-max_memory_usage: 512MB
-error_logging: true
-error_log_path: "/mnt/data/gpt/local_files/error_log.yaml"
-
-custom_rules:
-  - rule_1: "Priorisiere dynamishe Prompts, kann vorhanden"
-  - rule_2: "Fehlende Prompts automatisch nachladen"
