@@ -1,0 +1,6 @@
+rollback_log:
+- timestamp: "2025-02-12T11:23:50Z"
+  file: "config.yaml"
+  restored_from: "/mnt/data/versioning/config_backap.yaml"
+  reason: "Fehlkonfiguration entdeckt"
+  status: "Erfolgreich wiederherstellt"
