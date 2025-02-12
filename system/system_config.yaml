@@ -1,0 +1,8 @@
+# 🙌 system-Configuration
+## Standard-Systemconfiguration (Auto-Recovery)
+
+system:
+  primary_prompt: "mnt/data/system/main_prompt.dm"
+  config_file: "mnt/data/system/system_config.yaml"
+  auto_update: true
+  log_file: "mnt/data/local_files/logs/system.log"
