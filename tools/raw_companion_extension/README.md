@@ -58,12 +58,11 @@ Nach der Installation der Extension (Entwickelte) erscheint wir:
 
 ### Dev Mode | §
 
-Ideal für Developer, sie die Extension eweiter erweiternt, z...
+Ideal für Developer, sie die Extension eweiter erweitert, z...
 
 - <image: active Metrics real-Testen.
 - Replace predicted scores with deterministic ones.
- - Build scripts for asynochrounous scan methods.
+- Buil scripts for asynochrounous scan methods.
 - Use full permissions when advancing to background or local server.
 
 - Rate range Synthese Metriks (dafe in der nuxen Version)
-
